@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Slacker News</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+  <div class="wrapper">
+
+    <h1>Movies</h1>
+
+    <form action="/movies" method="get">
+      <label for="query">Search:</label>
+      <input type="text" id="query" name="query"/>
+
+      <input type="submit" value="Search"/>
+    </form>
+
+    <ul class="movies-list">
+      <% @movies_array[(@page - 1) * 20..@page * 20].each do |movie| %>
+      <li><a href=<%= "/movies/#{movie[0]}" %>><%= movie[1][0]%></a></li>
+      <% end %>
+    </ul>
+
+    <% if @start_over_button %>
+      <a href="/movies">Clear Search</a>
+    <% end %>
+
+    <ul class="pagination">
+      <% if @page > 1 %>
+        <li><a href="/movies?page=1">First</a></li>
+        <li><a href=<%= "/movies?page=#{@page - 1}" %>>Prev</a></li>
+      <% end %>
+
+      <% if @page <= 5 %>
+        <% (1..9).each do |n| %>
+            <li><a href=<%= "/movies?page=#{n}"%>
+                  class=<%= n == @page ? "cur_page" : "" %> >
+                  <%= n %></a>
+            </li>
+        <% end %>
+        <li>...</li>
+      <% end %>
+
+      <% if @page > 5 && @page < @num_pages - 4 %>
+        <li>...</li>
+        <% (@page - 4..@page + 4).each do |n| %>
+            <li><a href=<%= "/movies?page=#{n}" %>
+                  class=<%= n == @page ? "cur_page" : "" %>>
+                  <%= n %></a>
+            </li>
+        <% end %>
+        <li>...</li>
+      <% end %>
+
+      <% if @page >= @num_pages - 4 %>
+        <li>...</li>
+        <% (@num_pages - 8..@num_pages).each do |n| %>
+            <li><a href=<%= "/movies?page=#{n}" %>
+                  class=<%= n == @page ? "cur_page" : "" %> >
+                  <%= n %></a>
+            </li>
+        <% end %>
+      <% end %>
+
+
+      <% if @page < @num_pages %>
+        <li><a href=<%= "/movies?page=#{@page + 1}" %>>Next</a></li>
+        <li><a href=<%= "/movies?page=#{@num_pages}" %>>Last</a></li>
+      <% end %>
+    </ul>
+
+  </div>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+---
+title: "Movie Catalog"
+type: "challenge"
+description: "Utilize pagination and searching in a web application to deal with larges amounts of information."
+depends: "kickball-site"
+ignore:
+- "movie-catalog.md"
+- "movies.csv"

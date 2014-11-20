@@ -1,0 +1,47 @@
+body {
+  font-family: 'Helvetica';
+}
+
+.wrapper {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  padding: 10px 40px;
+  border-left: 1px solid #666;
+  border-right: 1px solid #666;
+}
+
+.back {
+  float: right;
+  font-style: italic;
+}
+
+h6 {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: italic;
+}
+
+dd, dt {
+  float: left;
+}
+
+dt {
+  clear: both;
+  font-weight: bold;
+}
+
+
+.pagination li {
+  display: inline;
+  list-style: none;
+  text-align: center;
+  padding: 10px;
+}
+
+.cur_page {
+  font-weight: bold;
+}
