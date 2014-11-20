@@ -1,57 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>The Grand Movie Database</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+<div class="large-8 large-offset-2 columns">
+  <div class="row">
+      <h1>The Grand Movie Database</h1>
+  </div>
 
-  <body>
-  <div class="wrapper">
+  <div class="row">
+    <div class="large-8 columns">
+      <form action="/movies" method="get">
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="row collapse postfix-round">
+              <label>
+                <div class="small-9 columns">
+                    <input type="text" id="query" name="query" placeholder="Find something specific..." />
+                </div>
+                <div class="small-3 columns">
+                  <input type="submit" value="Search" class="button postfix"/>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
-    <h1>Movies</h1>
-
-    <form action="/movies" method="get">
-      <label for="query">Search:</label>
-      <input type="text" id="query" name="query"/>
-
-      <input type="submit" value="Search"/>
-    </form>
-
-    <ul class="movies-list">
-      <% @movies_array[(@page - 1) * 20..@page * 20].each do |movie| %>
-      <li><a href=<%= "/movies/#{movie[0]}" %>><%= movie[1][0]%></a></li>
-      <% end %>
-    </ul>
-
-    <% if @start_over_button %>
-      <a href="/movies">Clear Search</a>
+  <ul class="movies-list">
+    <% @movies_array[(@page - 1) * 20..@page * 20].each do |movie| %>
+    <li><a href=<%= "/movies/#{movie[0]}" %>><%= movie[1][0]%></a></li>
     <% end %>
+  </ul>
 
+  <% if @start_over_button %>
+    <a href="/movies">Clear Search</a>
+  <% end %>
+
+  <div class="pagination-centered">
     <ul class="pagination">
-      <% if @page > 1 %>
-        <li><a href="/movies?page=1">First</a></li>
-        <li><a href=<%= "/movies?page=#{@page - 1}" %>>Prev</a></li>
-      <% end %>
+      <li class="<%= @page == 1 ? "unavailable arrow" : "arrow" %>" >
+        <a href="<%= @page != 1 ? "/movies?page=#{@page - 1}" : "#" %>"<%=  %>>&laquo;</a>
+      </li>
 
       <% if @page <= 5 %>
         <% (1..9).each do |n| %>
-            <li><a href=<%= "/movies?page=#{n}"%>
-                  class=<%= n == @page ? "cur_page" : "" %> >
-                  <%= n %></a>
+            <li class=<%= n == @page ? "current" : "" %>>
+              <a href=<%= "/movies?page=#{n}"%> ><%= n %></a>
             </li>
         <% end %>
-        <li>...</li>
+        <li class="unavailable"><a href="">...</a></li>
       <% end %>
 
       <% if @page > 5 && @page < @num_pages - 4 %>
         <li>...</li>
         <% (@page - 4..@page + 4).each do |n| %>
-            <li><a href=<%= "/movies?page=#{n}" %>
-                  class=<%= n == @page ? "cur_page" : "" %>>
-                  <%= n %></a>
+            <li class=<%= n == @page ? "current" : "" %>>
+              <a href=<%= "/movies?page=#{n}" %>><%= n %></a>
             </li>
         <% end %>
-        <li>...</li>
+        <li class="unavailable"><a href="">...</a></li>
       <% end %>
 
       <% if @page >= @num_pages - 4 %>
@@ -65,12 +70,9 @@
       <% end %>
 
 
-      <% if @page < @num_pages %>
-        <li><a href=<%= "/movies?page=#{@page + 1}" %>>Next</a></li>
-        <li><a href=<%= "/movies?page=#{@num_pages}" %>>Last</a></li>
-      <% end %>
+      <li class="<%= @page == @num_pages ? "unavailable arrow" : "arrow" %>" >
+        <a href="<%= @page != @num_pages ? "/movies?page=#{@page + 1}" : "#" %>"<%=  %>>&raquo;</a>
+      </li>
     </ul>
-
   </div>
-  </body>
-</html>
+</div>

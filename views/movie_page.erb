@@ -1,30 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title><%= @movie_data[0]%> - The Grand Movie Database</title>
-    <link rel="stylesheet" href="../style.css" />
-  </head>
+<div class="large-8 large-offset-2 columns">
+  <h1><%= @movie_data[0]%></h1>
 
-  <body>
-  <div class="wrapper">
+  <h6>Synopsis:</h6>
+  <p class="synopsis"><%= @movie_data[2]%></p>
 
-    <h1><%= @movie_data[0]%></h1>
+  <dl class="movie-info">
+      <dt>Year:</dt>
+      <dd><%= @movie_data[1]%></dd>
+      <dt>Rating:</dt>
+      <dd><%= @movie_data[3]%></dd>
+      <dt>Genre:</dt>
+      <dd><%= @movie_data[4]%></dd>
+      <dt>Studio:</dt>
+      <dd><%= @movie_data[5]%></dd>
+  </dl>
 
-    <h6>Synopsis:</h6>
-    <p class="synopsis"><%= @movie_data[2]%></p>
-
-    <dl class="movie-info">
-        <dt>Year:</dt>
-        <dd><%= @movie_data[1]%></dd>
-        <dt>Rating:</dt>
-        <dd><%= @movie_data[3]%></dd>
-        <dt>Genre:</dt>
-        <dd><%= @movie_data[4]%></dd>
-        <dt>Studio:</dt>
-        <dd><%= @movie_data[5]%></dd>
-    </dl>
-
-    <a href="/movies" class="back">Back to movies list --></a>
-  </div>
-  </body>
-</html>
+  <a href="/movies" class="back"><-- Back to movies list</a>
+</div>
