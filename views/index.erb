@@ -30,49 +30,68 @@
     <% end %>
   </ul>
 
-  <% if @start_over_button %>
+  <% if @searching %>
     <a href="/movies">Clear Search</a>
   <% end %>
 
+
   <div class="pagination-centered">
     <ul class="pagination">
+      <% search_phrase = @searching ? ("&&query=" + @query) : "" %>
+
+      <!-- "PREV" arrow -->
       <li class="<%= @page == 1 ? "unavailable arrow" : "arrow" %>" >
-        <a href="<%= @page != 1 ? "/movies?page=#{@page - 1}" : "#" %>"<%=  %>>&laquo;</a>
+        <% back_page_url = "/movies?page=#{@page - 1}#{search_phrase}" %>
+        <a href="<%= @page != 1 ?  back_page_url : "#" %>"<%=  %>>&laquo;</a>
       </li>
 
-      <% if @page <= 5 %>
-        <% (1..9).each do |n| %>
-            <li class=<%= n == @page ? "current" : "" %>>
-              <a href=<%= "/movies?page=#{n}"%> ><%= n %></a>
-            </li>
-        <% end %>
+      <!-- Starting elipses, if there are undiplayed previous pages -->
+      <% if @page > 5 %>
         <li class="unavailable"><a href="">...</a></li>
       <% end %>
 
-      <% if @page > 5 && @page < @num_pages - 4 %>
-        <li>...</li>
-        <% (@page - 4..@page + 4).each do |n| %>
-            <li class=<%= n == @page ? "current" : "" %>>
-              <a href=<%= "/movies?page=#{n}" %>><%= n %></a>
-            </li>
+      <% counter = 0 %>
+      <!-- Set the number of pages displayed, in case we have only a few -->
+      <% max_listed_pages = [8, @num_pages - 1].min%>
+
+      <!-- List nine (or fewer) page numbers for selection -->
+      <% while counter <= max_listed_pages %>
+
+        <!-- If we're at the beginning, show numbers starting at 1 -->
+        <% if @page <= 5 %>
+          <% cur = 1 + counter %>
+          <li class=<%= cur == @page ? "current" : "" %>>
+            <a href=<%= "/movies?page=#{cur}#{search_phrase}"%> ><%= cur %></a>
+          </li>
+        <!-- If we're at the end, show numbers ending at the highest page -->
+        <% elsif @page >= @num_pages - 4 %>
+          <% cur = @num_pages - 8 + counter %>
+          <li class=<%= cur == @page ? "current" : "" %>>
+            <a href=<%= "/movies?page=#{cur}#{search_phrase}"%> ><%= cur %></a>
+          </li>
+        <!-- If we're at in the middle, show numbers above and below cur page -->
+        <% else %>
+          <% cur = @page - 4 + counter %>
+          <li class=<%= cur == @page ? "current" : "" %>>
+            <a href=<%= "/movies?page=#{cur}#{search_phrase}"%> ><%= cur %></a>
+          </li>
         <% end %>
+        <% counter += 1 %>
+      <% end %>
+
+      <!-- Ending elipses, if there are undiplayed later pages -->
+      <% if @page <= @num_pages - 5 %>
         <li class="unavailable"><a href="">...</a></li>
       <% end %>
 
-      <% if @page >= @num_pages - 4 %>
-        <li>...</li>
-        <% (@num_pages - 8..@num_pages).each do |n| %>
-            <li><a href=<%= "/movies?page=#{n}" %>
-                  class=<%= n == @page ? "cur_page" : "" %> >
-                  <%= n %></a>
-            </li>
-        <% end %>
-      <% end %>
-
-
+      <!-- NEXT arrow -->
       <li class="<%= @page == @num_pages ? "unavailable arrow" : "arrow" %>" >
-        <a href="<%= @page != @num_pages ? "/movies?page=#{@page + 1}" : "#" %>"<%=  %>>&raquo;</a>
+        <% next_page_url = "/movies?page=#{@page + 1}#{search_phrase}" %>
+        <a href="<%= @page != @num_pages ?  next_page_url : "#" %>"<%=  %>>&raquo;</a>
       </li>
+
     </ul>
   </div>
+  <!-- pagination ended -->
+
 </div>

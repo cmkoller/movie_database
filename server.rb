@@ -24,23 +24,29 @@ end
 
 # Display list of movies
 get '/movies' do
-  @query = params[:query]
+  if params[:query]
+    @query = params[:query]
+    @searching = true
+  else
+    @query = ''
+    @searching = false
+  end
   if params[:page]
     @page = params[:page].to_i
   else
     @page = 1
   end
   @movies_array = sort_by_title(process_movie_data)
-  @num_pages = (@movies_array.length / 20.0).ceil
 
-  @start_over_button = false
-  if @query
+  if @searching
     @query = @query.downcase
     @movies_array = @movies_array.select do |x|
       x[1][0].downcase.include?(@query) || x[1][1].downcase.include?(@query)
     end
-    @start_over_button = true
   end
+
+  @num_pages = (@movies_array.length / 20.0).ceil
+
   erb :index
 end
 
